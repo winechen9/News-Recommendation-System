@@ -25,7 +25,7 @@ class CloudAMQPClient:
             print("[x] Received message from %s:%s" % (self.queue_name, body))
             # only if broker receives the certificate(delivery_tag), it can safely delete messages
             self.channel.basic_ack(method_frame.delivery_tag)
-            return json.loads(body)
+            return json.loads(body.decode('utf-8'))
         else:
             # if the queue is empty or not receive id
             print("no message returned.")

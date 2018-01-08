@@ -27,7 +27,7 @@ class NewsPanel extends React.Component {
 
   loadMoreNews() {
     const news_url = 'http://' + window.location.hostname + ':3000' + '/news';
-    const request = new Request(news_url, {method:'GET', cache:false});
+    const request = new Request(news_url, {method:'GET'});
 
     fetch(request)
       .then(res => res.json())
