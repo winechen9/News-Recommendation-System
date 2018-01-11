@@ -3,7 +3,7 @@ import Auth from '../Auth/Auth';
 import { Link } from 'react-router';
 import './Base.css';
 
-const Base = ({  children  }) => {
+const Base = ({  children  }) => (
     <div>
         <nav className="nav-bar indigo lighten-1">
             <div className="nav-wrapper">
@@ -26,6 +26,6 @@ const Base = ({  children  }) => {
         <br/>
         { children }
     </div>
-};
+);
 
 export default Base;
