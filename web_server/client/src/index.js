@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App/App';
-import LoginPage from './Login/LoginPage';
-import SignUpPage from './SignUp/SignUpPage';
+import ReactDom from 'react-dom'
 
-ReactDOM.render(
-  <SignUpPage />,
-  document.getElementById('root')
+import { browserHistory, Router } from 'react-router';
+import routes from './routes';
+
+ReactDom.render(
+  // eslint-disable-next-line
+  <Router history={browserHistory} routes={routes} />, document.getElementById('root')
 );
