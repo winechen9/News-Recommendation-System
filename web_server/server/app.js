@@ -34,6 +34,7 @@ passport.use('local-login', localLoginStrategy);
 const authChecker = require('./middleware/auth_checker');
 
 app.use('/', index);
+app.use('/auth', auth);
 app.use('/news', authChecker);
 app.use('/news', news);
 
