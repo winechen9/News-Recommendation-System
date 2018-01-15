@@ -1,3 +1,4 @@
+import datetime
 import hashlib
 import redis
 import os
@@ -6,6 +7,25 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'common'))
 
 import news_api_client
+from cloudAMQP_client import CloudAMQPClient
+
+SLEEP_TIME_IN_SECONDS = 10
+NEWS_TIME_OUT_IN_SECONDS = 3600*24*3
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
+NEWS_SOURCES = [
+    'cnn'
+    ]
+
+SCRAPE_NEWS_TASK_QUEUE_URL = "amqp://cqvewdqp:Q8e7yxcQ0U--2FoHwGWF5BHiZ4l1HUFn@termite.rmq.cloudamqp.com/cqvewdqp"
+SCRAPE_NEWS_TASK_QUEUE_NAME = "tap-news-scrape-news-task-queue"
+
+redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
+cloudAMQP_client = CloudAMQPClient(SCRAPE_NEWS_TASK_QUEUE_URL, SCRAPE_NEWS_TASK_QUEUE_NAME)
+
+
 
 while True:
     news_list = news_api_client.getNewsFromSource(NEWS_SOURCES)
@@ -17,4 +37,19 @@ while True:
 
         if redis_client.get(news_digest) is None:
             number_of_news += 1
-            
+            news['digest'] = news_digest
+
+            if news['publishedAt'] is None:
+                # use current UTC as the published time
+                news['publishedAt'] = datetime.datetime.utcnow().strftime(
+                    "%Y-%m-%dT%H:%M:%SZ"
+                )
+            redis_client.set(news_digest, "True")
+            redis_client.expire(news_digest, NEWS_TIME_OUT_IN_SECONDS)
+
+            cloudAMQP_client.sendMessage(news)
+
+    print("Fetched %d news." % number_of_news)
+
+    cloudAMQP_client.sleep(SLEEP_TIME_IN_SECONDS)
+
