@@ -30,7 +30,7 @@ class LoginPage extends React.Component {
     const request = new Request(
       url,
       {
-        method: 'Post',
+        method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

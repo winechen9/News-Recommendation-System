@@ -32,7 +32,7 @@ class NewsPanel extends React.Component {
                   {
                     method:'GET',
                     headers: {
-                      'Authorization': 'bearer ' + Auth.getToken()
+                      'Authorization': 'bearer ' + Auth.getToken(),
                     }
                   });
 

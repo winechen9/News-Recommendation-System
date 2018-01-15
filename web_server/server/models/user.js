@@ -28,6 +28,8 @@ UserSchema.pre('save', function saveHook(next) {
   
         // replace a password string with hashed value.
         user.password = hash;
+
+        return next();
       });
     });
   });
