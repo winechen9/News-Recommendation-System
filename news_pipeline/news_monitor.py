@@ -16,7 +16,17 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 
 NEWS_SOURCES = [
-    'cnn'
+    'bbc-news',
+    'bbc-sport',
+    'bloomberg',
+    'cnn',
+    'entertainment-weekly',
+    'espn',
+    'ign',
+    'techcrunch',
+    'the-new-york-times',
+    'the-wall-street-journal',
+    'the-washington-post'
     ]
 
 SCRAPE_NEWS_TASK_QUEUE_URL = "amqp://cqvewdqp:Q8e7yxcQ0U--2FoHwGWF5BHiZ4l1HUFn@termite.rmq.cloudamqp.com/cqvewdqp"

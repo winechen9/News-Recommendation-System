@@ -1,12 +1,13 @@
 import os
 import sys
 
-
+from newspaper import Article
 
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'common'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'scrapers'))
-import cnn_news_scraper
+# sys.path.append(os.path.join(os.path.dirname(__file__), 'scrapers'))
+
+# import cnn_news_scraper
 from cloudAMQP_client import CloudAMQPClient
 
 DEDUPE_NEWS_TASK_QUEUE_URL = "amqp://fmzvgwat:VUzmxL2eF3c_QZ-4m9StmUCf8WALe8Z8@termite.rmq.cloudamqp.com/fmzvgwat"
@@ -28,13 +29,17 @@ def handle_message(msg):
     task = msg
     text = None
 
-    if task['source'] == 'cnn':
-        print('scraping CNN news')
-        text = cnn_news_scraper.extractNews(task['url'])
-    else:
-        print('News source [%s] is not supported.' % task['source'])
+    # if task['source'] == 'cnn':
+    #     print('scraping CNN news')
+    #     text = cnn_news_scraper.extractNews(task['url'])
+    # else:
+    #     print('News source [%s] is not supported.' % task['source'])
 
-    task['text'] = text
+    article = Article(task['url'])
+    article.download()
+    article.parse()
+
+    task['text'] = article.text
     dedupe_news_queue_client.sendMessage(task)
 
 
