@@ -1,4 +1,4 @@
 {
-    "mongoDbUri": "mongodb://test:test@ds058579.mlab.com:58579/cs503",
+    "mongoDbUri": "mongodb://test:test@ds153392.mlab.com:53392/news-recommendation",
     "jwtSecret": "a secret phrase!!"
 }
