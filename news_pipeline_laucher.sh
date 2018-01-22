@@ -2,7 +2,7 @@
 service redis_6379 start
 service mongod start
 
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 cd news_pipeline
 python3 news_monitor.py &
