@@ -9,6 +9,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'common'))
 
 
 import mongodb_client
+import news_topic_modeling_service_client
+
 from cloudAMQP_client import CloudAMQPClient
 
 DEDUPE_NEWS_TASK_QUEUE_URL = "amqp://fmzvgwat:VUzmxL2eF3c_QZ-4m9StmUCf8WALe8Z8@termite.rmq.cloudamqp.com/fmzvgwat"
@@ -56,6 +58,14 @@ def handle_message(msg):
                 return
 
         task['publishedAt'] = parser.parse(task['published'])
+
+
+        # Classify news.
+        title = task['title']
+        if title is not None:
+            topic = news_topic_modeling_service_client.classify(title)
+            task['class'] = topic
+
         db[NEWS_TABLE_NAME].replace_one({'digest': task['digest']}, task, upsert = True)
 
 while True:
